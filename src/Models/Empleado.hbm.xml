@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 07-mar-2020 22:14:43 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Models.Empleado" table="empleado" catalog="m06_incidencias" optimistic-lock="version">
+        <id name="nombreusuario" type="string">
+            <column name="nombreusuario" length="10" />
+            <generator class="assigned" />
+        </id>
+        <property name="password" type="string">
+            <column name="password" length="10" not-null="true" />
+        </property>
+        <property name="nombrecompleto" type="string">
+            <column name="nombrecompleto" length="50" not-null="true" />
+        </property>
+        <property name="telefono" type="string">
+            <column name="telefono" length="9" not-null="true" />
+        </property>
+        <set name="incidenciasForOrigen" table="incidencia" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="origen" length="10" not-null="true" />
+            </key>
+            <one-to-many class="Models.Incidencia" />
+        </set>
+        <set name="historials" table="historial" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="empleado" length="10" not-null="true" />
+            </key>
+            <one-to-many class="Models.Historial" />
+        </set>
+        <set name="incidenciasForDestino" table="incidencia" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="destino" length="10" not-null="true" />
+            </key>
+            <one-to-many class="Models.Incidencia" />
+        </set>
+    </class>
+</hibernate-mapping>

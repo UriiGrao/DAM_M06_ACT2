@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 07-mar-2020 22:14:43 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Models.Incidencia" table="incidencia" catalog="m06_incidencias" optimistic-lock="version">
+        <id name="idincidencia" type="int">
+            <column name="idincidencia" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="empleadoByOrigen" class="Models.Empleado" fetch="select">
+            <column name="origen" length="10" not-null="true" />
+        </many-to-one>
+        <many-to-one name="empleadoByDestino" class="Models.Empleado" fetch="select">
+            <column name="destino" length="10" not-null="true" />
+        </many-to-one>
+        <property name="fechahora" type="string">
+            <column name="fechahora" length="50" not-null="true" />
+        </property>
+        <property name="detalle" type="string">
+            <column name="detalle" length="65535" not-null="true" />
+        </property>
+        <property name="tipo" type="string">
+            <column name="tipo" length="8" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
