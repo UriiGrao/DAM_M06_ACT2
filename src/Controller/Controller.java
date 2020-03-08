@@ -30,28 +30,47 @@ public class Controller {
         tx.commit();
         session.close();
     }
-
-    public static void getEmpleado(String userName) {
+    
+    public static Empleado getEmpleado(String userName) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         Empleado e;
         e = (Empleado) session.get(Empleado.class, userName);
-        System.out.println("User caught correctly.");
+        tx.commit();
+        session.close();
+        return e;
+    }
+    
+    public static void modifyEmpleado(Empleado empleado, String tipoCambio, String cambio) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        switch (tipoCambio) {
+            case "nombrecompleto":
+                empleado.setNombrecompleto(cambio);
+                break;
+            case "telefono":
+                empleado.setTelefono(cambio);
+                break;
+            case "password":
+                empleado.setPassword(cambio);
+        }
+        session.update(empleado);
+        System.out.println("User successfully modified");
+        
         tx.commit();
         session.close();
     }
-
-    public static void deleteEmpleado(String userName) {
+    
+    public static void deleteEmpleado(Empleado empleado) {
         Session session;
         session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
-        Empleado e = new Empleado(userName);
-        session.delete(e);
+        session.delete(empleado);
         System.out.println("User deleted correctly");
         tx.commit();
         session.close();
     }
-
+    
     public static void consultaEmpleado(String c) {
         System.out.println("Out of Query");
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -67,6 +86,6 @@ public class Controller {
 
     //Historial
     public static void addHistorial() {
-
+        
     }
 }
