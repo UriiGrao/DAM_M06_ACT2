@@ -97,7 +97,7 @@ public class Controller {
     }
 
     public static Historial getHistorial(String idEvento) {
-        Transaction tx;
+        Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         Historial h;
         h = (Historial) session.get(Historial.class, idEvento);
@@ -112,6 +112,37 @@ public class Controller {
         Transaction tx = session.beginTransaction();
         session.delete(historial);
         System.out.println("Historial deleted correctly");
+        tx.commit();
+        session.close();
+    }
+
+
+    // Incidencias
+    public static void addIncidencia(Incidencia incidencia) {
+        Session session;
+        session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        session.save(incidencia);
+        System.out.println("Incidencia created correctly");
+        tx.commit();
+        session.close();
+    }
+
+    public static Incidencia getIncidencia(String idIncidencia) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        Incidencia i;
+        i = (Incidencia) session.get(Incidencia.class, idIncidencia);
+        tx.commit();
+        session.close();
+        return i;
+    }
+
+    public static void deleteIncidencia(Incidencia incidencia) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        session.delete(incidencia);
+        System.out.println("Incidencia deleted correctly");
         tx.commit();
         session.close();
     }

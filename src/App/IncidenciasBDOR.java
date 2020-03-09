@@ -28,17 +28,17 @@ public class IncidenciasBDOR {
         while (!salir) {
             switch (menu()) {
                 case 1:
-                    workWithIncidencias();
-                    break;
+                workWithIncidencias();
+                break;
                 case 2:
-                    workWithEmpleados();
-                    break;
+                workWithEmpleados();
+                break;
                 case 3:
-                    System.out.println("See You!!");
-                    salir = true;
-                    break;
+                System.out.println("See You!!");
+                salir = true;
+                break;
                 default:
-                    System.out.println("Error Option try again.");
+                System.out.println("Error Option try again.");
             }
         }
     }
@@ -55,7 +55,16 @@ public class IncidenciasBDOR {
 
     private static void workWithIncidencias() {
         boolean salirInci = false;
-
+        while (!salirInci) {
+            switch (menuInci()) {
+                case "a":
+                break;
+                case "b":
+                break;
+                case "c":
+                break;
+            }
+        }
     }
 
     private static void workWithEmpleados() {
@@ -63,25 +72,25 @@ public class IncidenciasBDOR {
         while (!salirEmp) {
             switch (menuEmp()) {
                 case "a":
-                    createEmpleado();
-                    break;
+                createEmpleado();
+                break;
                 case "b":
-                    loginEmpleado();
-                    break;
+                loginEmpleado();
+                break;
                 case "c":
-                    modifyEmpleado();
-                    break;
+                modifyEmpleado();
+                break;
                 case "d":
-                    changePasswordEmpleado();
-                    break;
+                changePasswordEmpleado();
+                break;
                 case "e":
-                    deleteEmpleado();
-                    break;
+                deleteEmpleado();
+                break;
                 case "f":
-                    salirEmp = true;
-                    break;
+                salirEmp = true;
+                break;
                 default:
-                    System.out.println("Error Option try again.");
+                System.out.println("Error Option try again.");
             }
         }
 
@@ -144,18 +153,18 @@ public class IncidenciasBDOR {
         while (!salirEdit) {
             switch (menuEdit(empleado)) {
                 case 1:
-                    String completName = EntradaDatos.pedirCadena("Nuevo Nombre Completo: ");
-                    Controller.modifyEmpleado(empleado, "nombrecompleto", completName);
-                    break;
+                String completName = EntradaDatos.pedirCadena("Nuevo Nombre Completo: ");
+                Controller.modifyEmpleado(empleado, "nombrecompleto", completName);
+                break;
                 case 2:
-                    String telefono = EntradaDatos.pedirCadena("Nuevo Telefono: ");
-                    Controller.modifyEmpleado(empleado, "telefono", telefono);
-                    break;
+                String telefono = EntradaDatos.pedirCadena("Nuevo Telefono: ");
+                Controller.modifyEmpleado(empleado, "telefono", telefono);
+                break;
                 case 3:
-                    salirEdit = true;
-                    break;
+                salirEdit = true;
+                break;
                 default:
-                    System.out.println("Wrong Edit");
+                System.out.println("Wrong Edit");
             }
         }
     }
