@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * @author mfontana
  */
-public class EntradaDatos extends Exception {
+public class EntradaDatos {
 
     public static String pedirCadena(String texto) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

@@ -46,13 +46,13 @@ public class Controller {
         Transaction tx = session.beginTransaction();
         switch (tipoCambio) {
             case "nombrecompleto":
-                empleado.setNombrecompleto(cambio);
-                break;
+            empleado.setNombrecompleto(cambio);
+            break;
             case "telefono":
-                empleado.setTelefono(cambio);
-                break;
+            empleado.setTelefono(cambio);
+            break;
             case "password":
-                empleado.setPassword(cambio);
+            empleado.setPassword(cambio);
         }
         session.update(empleado);
         System.out.println("User successfully modified");
@@ -85,7 +85,34 @@ public class Controller {
     }
 
     //Historial
-    public static void addHistorial() {
-        
+    public static void addHistorial(EMpleado empleado, String tipo, String fechahora) {
+        Transaction tx;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        tx = session.beginTransaction();
+        Historial historial = new Historial(empleado, tipo, fechahora);
+        session.save(historial);
+        System.out.println("Historial created correctly");
+        tx.commit();
+        session.close();
+    }
+
+    public static Historial getHistorial(String idEvento) {
+        Transaction tx;
+        Transaction tx = session.beginTransaction();
+        Historial h;
+        h = (Historial) session.get(Historial.class, idEvento);
+        tx.commit();
+        session.close();
+        return h;
+    }
+
+    public static void deleteHistorial(Historial historial) {
+        Session session;
+        session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        session.delete(historial);
+        System.out.println("Historial deleted correctly");
+        tx.commit();
+        session.close();
     }
 }
