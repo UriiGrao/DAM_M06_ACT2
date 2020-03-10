@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package App;
 
 import Utils.Colors;
@@ -18,8 +13,9 @@ import java.util.Scanner;
  */
 public class IncidenciasBDOR {
 
+    private static final String ERROR_MESSAGE = "Error Option try again.";
+
     public static ArrayList<Empleado> empleados = new ArrayList<>();
-    public static ArrayList<Historial> historiales = new ArrayList<>();
     public static ArrayList<Incidencia> incidencias = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -38,7 +34,7 @@ public class IncidenciasBDOR {
                 salir = true;
                 break;
                 default:
-                System.out.println("Error Option try again.");
+                Colors.printRed(ERROR_MESSAGE);
             }
         }
     }
@@ -58,11 +54,21 @@ public class IncidenciasBDOR {
         while (!salirInci) {
             switch (menuInci()) {
                 case "a":
+                getIncidenciaByID();
                 break;
                 case "b":
                 break;
                 case "c":
                 break;
+                case "d":
+                break;
+                case "e":
+                break;
+                case "f":
+                salirInci = true;
+                break;
+                default:
+                Colors.printRed(ERROR_MESSAGE);
             }
         }
     }
@@ -90,7 +96,7 @@ public class IncidenciasBDOR {
                 salirEmp = true;
                 break;
                 default:
-                System.out.println("Error Option try again.");
+                Colors.printRed(ERROR_MESSAGE);
             }
         }
 
@@ -106,6 +112,22 @@ public class IncidenciasBDOR {
         System.out.println("e. Eliminar ");
         System.out.println("f. Exit");
         return entrada.next();
+    }
+
+    private static String menuInci() {
+        Scanner entrada = new Scanner(System.in);
+        System.out.println("-- MENU --");
+        System.out.println("a. Mostrar 1 Incidencia");
+        System.out.println("b. Mostrar Incidencias");
+        System.out.println("c. Insertar Incidencia");
+        System.out.println("d. Mostrar Incidencia gestionadas por Empleado");
+        System.out.println("e. Mostrar Incidencia creadas por Empleado");
+        System.out.println("f. Exit");
+        return entrada.next();
+    }
+
+    private static void getIncidenciaByID() {
+        
     }
 
     private static void createEmpleado() {
@@ -164,7 +186,7 @@ public class IncidenciasBDOR {
                 salirEdit = true;
                 break;
                 default:
-                System.out.println("Wrong Edit");
+                Colors.printRed(ERROR_MESSAGE);
             }
         }
     }
