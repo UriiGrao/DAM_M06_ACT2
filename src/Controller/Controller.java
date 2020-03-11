@@ -2,6 +2,8 @@ package Controller;
 
 import Models.Empleado;
 import Models.HibernateUtil;
+import Models.Historial;
+import Models.Incidencia;
 import java.util.Iterator;
 import java.util.List;
 import org.hibernate.Query;
@@ -25,7 +27,7 @@ public class Controller {
         tx.commit();
         session.close();
     }
-    
+
     public static Empleado getEmpleado(String userName) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
@@ -35,27 +37,27 @@ public class Controller {
         session.close();
         return e;
     }
-    
+
     public static void modifyEmpleado(Empleado empleado, String tipoCambio, String cambio) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         switch (tipoCambio) {
             case "nombrecompleto":
-            empleado.setNombrecompleto(cambio);
-            break;
+                empleado.setNombrecompleto(cambio);
+                break;
             case "telefono":
-            empleado.setTelefono(cambio);
-            break;
+                empleado.setTelefono(cambio);
+                break;
             case "password":
-            empleado.setPassword(cambio);
+                empleado.setPassword(cambio);
         }
         session.update(empleado);
         System.out.println("User successfully modified");
-        
+
         tx.commit();
         session.close();
     }
-    
+
     public static void deleteEmpleado(Empleado empleado) {
         Session session;
         session = HibernateUtil.getSessionFactory().openSession();
@@ -65,7 +67,7 @@ public class Controller {
         tx.commit();
         session.close();
     }
-    
+
     public static void consultaEmpleado(String c) {
         System.out.println("Out of Query");
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -80,7 +82,7 @@ public class Controller {
     }
 
     //Historial
-    public static void addHistorial(EMpleado empleado, String tipo, String fechahora) {
+    public static void addHistorial(Empleado empleado, String tipo, String fechahora) {
         Transaction tx;
         Session session = HibernateUtil.getSessionFactory().openSession();
         tx = session.beginTransaction();
@@ -110,7 +112,6 @@ public class Controller {
         tx.commit();
         session.close();
     }
-
 
     // Incidencias
     public static void addIncidencia(Incidencia incidencia) {
