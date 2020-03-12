@@ -20,10 +20,10 @@ public class Empleado implements java.io.Serializable {
     public Empleado() {
     }
 
-    public Empleado(String nombreusuario){
+    public Empleado(String nombreusuario) {
         this.nombreusuario = nombreusuario;
     }
-    
+
     public Empleado(String nombreusuario, String password, String nombrecompleto, String telefono) {
         this.nombreusuario = nombreusuario;
         this.password = password;

@@ -9,6 +9,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
 
 /**
  *
@@ -18,14 +19,21 @@ public class Controller {
 
     // Empleado
     public static void addEmpleado(String userName, String pass, String completName, String phone) {
-        Transaction tx;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        tx = session.beginTransaction();
-        Empleado e = new Empleado(userName, pass, completName, phone);
-        session.save(e);
-        System.out.println("User created correctly");
-        tx.commit();
-        session.close();
+        Session session;
+        Transaction tx = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            Empleado e = new Empleado(userName, pass, completName, phone);
+            session.save(e);
+            System.out.println("User created correctly");
+            tx.commit();
+            session.close();
+        } catch (ConstraintViolationException ex) {
+            // haríamos el rollback
+            tx.rollback();
+            throw ex;
+        }
     }
 
     public static Empleado getEmpleado(String userName) {
@@ -122,6 +130,7 @@ public class Controller {
         System.out.println("Incidencia created correctly");
         tx.commit();
         session.close();
+
     }
 
     public static Incidencia getIncidencia(String idIncidencia) {
@@ -141,5 +150,12 @@ public class Controller {
         System.out.println("Incidencia deleted correctly");
         tx.commit();
         session.close();
+    }
+
+    public static List<Incidencia> queryIncidenciaByID(int idInci) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        String query = "SELECT i FROM Incidencia i WHERE idincidencia = " + idInci;
+        Query q = session.createQuery(query);
+        return q.list();
     }
 }

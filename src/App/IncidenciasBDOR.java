@@ -127,7 +127,9 @@ public class IncidenciasBDOR {
     }
 
     private static void getIncidenciaByID() {
-
+        int idInci = EntradaDatos.pedirEntero("Numero de inci1dencia: ");
+        incidencias = (ArrayList<Incidencia>) Controller.queryIncidenciaByID(idInci);
+        System.out.println(incidencias);
     }
 
     private static void createEmpleado() {
