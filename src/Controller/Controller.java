@@ -89,7 +89,7 @@ public class Controller {
         session.close();
     }
 
-    //Historial
+    // Historial
     public static void addHistorial(Empleado empleado, String tipo, String fechahora) {
         Transaction tx;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -155,6 +155,13 @@ public class Controller {
     public static List<Incidencia> queryIncidenciaByID(int idInci) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         String query = "SELECT i FROM Incidencia i WHERE idincidencia = " + idInci;
+        Query q = session.createQuery(query);
+        return q.list();
+    }
+
+    public static List<Incidencia> queryAllIncidencias() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        String query = "SELECT i FROM Incidencia i";
         Query q = session.createQuery(query);
         return q.list();
     }

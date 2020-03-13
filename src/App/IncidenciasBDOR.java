@@ -24,17 +24,17 @@ public class IncidenciasBDOR {
         while (!salir) {
             switch (menu()) {
                 case 1:
-                    workWithIncidencias();
-                    break;
+                workWithIncidencias();
+                break;
                 case 2:
-                    workWithEmpleados();
-                    break;
+                workWithEmpleados();
+                break;
                 case 3:
-                    System.out.println("See You!!");
-                    salir = true;
-                    break;
+                System.out.println("See You!!");
+                salir = true;
+                break;
                 default:
-                    Colors.printRed(ERROR_MESSAGE);
+                Colors.printRed(ERROR_MESSAGE);
             }
         }
     }
@@ -54,21 +54,23 @@ public class IncidenciasBDOR {
         while (!salirInci) {
             switch (menuInci()) {
                 case "a":
-                    getIncidenciaByID();
-                    break;
+                getIncidenciaByID();
+                break;
                 case "b":
-                    break;
+                getAllIncidencias();
+                break;
                 case "c":
-                    break;
+                createIncidencia();
+                break;
                 case "d":
-                    break;
+                break;
                 case "e":
-                    break;
+                break;
                 case "f":
-                    salirInci = true;
-                    break;
+                salirInci = true;
+                break;
                 default:
-                    Colors.printRed(ERROR_MESSAGE);
+                Colors.printRed(ERROR_MESSAGE);
             }
         }
     }
@@ -78,25 +80,25 @@ public class IncidenciasBDOR {
         while (!salirEmp) {
             switch (menuEmp()) {
                 case "a":
-                    createEmpleado();
-                    break;
+                createEmpleado();
+                break;
                 case "b":
-                    loginEmpleado();
-                    break;
+                loginEmpleado();
+                break;
                 case "c":
-                    modifyEmpleado();
-                    break;
+                modifyEmpleado();
+                break;
                 case "d":
-                    changePasswordEmpleado();
-                    break;
+                changePasswordEmpleado();
+                break;
                 case "e":
-                    deleteEmpleado();
-                    break;
+                deleteEmpleado();
+                break;
                 case "f":
-                    salirEmp = true;
-                    break;
+                salirEmp = true;
+                break;
                 default:
-                    Colors.printRed(ERROR_MESSAGE);
+                Colors.printRed(ERROR_MESSAGE);
             }
         }
 
@@ -126,10 +128,23 @@ public class IncidenciasBDOR {
         return entrada.next();
     }
 
+    private static void getAllIncidencias() {
+        incidencias = (ArrayList<Incidencia>) Controller.queryAllIncidencias();
+        for (Incidencia incidencia: incidencias) {
+            System.out.println(incidencia.toString());
+        }
+    }
+
     private static void getIncidenciaByID() {
         int idInci = EntradaDatos.pedirEntero("Numero de inci1dencia: ");
         incidencias = (ArrayList<Incidencia>) Controller.queryIncidenciaByID(idInci);
         System.out.println(incidencias);
+    }
+
+    private static void createIncidencia() {
+        String fechahora = EntradaDatos.pedirCadena("Fecha de la incidencias: ");
+        String detalle = EntradaDatos.pedirCadena("Detalles de la incidencia: ");
+        
     }
 
     private static void createEmpleado() {
@@ -177,18 +192,18 @@ public class IncidenciasBDOR {
         while (!salirEdit) {
             switch (menuEdit(empleado)) {
                 case 1:
-                    String completName = EntradaDatos.pedirCadena("Nuevo Nombre Completo: ");
-                    Controller.modifyEmpleado(empleado, "nombrecompleto", completName);
-                    break;
+                String completName = EntradaDatos.pedirCadena("Nuevo Nombre Completo: ");
+                Controller.modifyEmpleado(empleado, "nombrecompleto", completName);
+                break;
                 case 2:
-                    String telefono = EntradaDatos.pedirCadena("Nuevo Telefono: ");
-                    Controller.modifyEmpleado(empleado, "telefono", telefono);
-                    break;
+                String telefono = EntradaDatos.pedirCadena("Nuevo Telefono: ");
+                Controller.modifyEmpleado(empleado, "telefono", telefono);
+                break;
                 case 3:
-                    salirEdit = true;
-                    break;
+                salirEdit = true;
+                break;
                 default:
-                    Colors.printRed(ERROR_MESSAGE);
+                Colors.printRed(ERROR_MESSAGE);
             }
         }
     }
