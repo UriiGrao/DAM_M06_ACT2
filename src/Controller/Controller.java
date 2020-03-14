@@ -4,6 +4,7 @@ import Models.Empleado;
 import Models.HibernateUtil;
 import Models.Historial;
 import Models.Incidencia;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.hibernate.Query;
@@ -91,14 +92,21 @@ public class Controller {
 
     // Historial
     public static void addHistorial(Empleado empleado, String tipo, String fechahora) {
-        Transaction tx;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        tx = session.beginTransaction();
-        Historial historial = new Historial(empleado, tipo, fechahora);
-        session.save(historial);
-        System.out.println("Historial created correctly");
-        tx.commit();
-        session.close();
+        Transaction tx = null;
+        Session session;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            Historial historial = new Historial(empleado, tipo, fechahora);
+            session.save(historial);
+            System.out.println("Historial created correctly");
+            tx.commit();
+            session.close();
+        } catch (ConstraintViolationException ex) {
+            // haríamos el rollback
+            tx.rollback();
+            throw ex;
+        }
     }
 
     public static Historial getHistorial(String idEvento) {
@@ -123,14 +131,20 @@ public class Controller {
 
     // Incidencias
     public static void addIncidencia(Incidencia incidencia) {
+        Transaction tx = null;
         Session session;
-        session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
-        session.save(incidencia);
-        System.out.println("Incidencia created correctly");
-        tx.commit();
-        session.close();
-
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            session.save(incidencia);
+            System.out.println("Incidencia created correctly");
+            tx.commit();
+            session.close();
+        } catch (ConstraintViolationException ex) {
+            // haríamos el rollback
+            tx.rollback();
+            throw ex;
+        }
     }
 
     public static Incidencia getIncidencia(String idIncidencia) {
@@ -162,6 +176,27 @@ public class Controller {
     public static List<Incidencia> queryAllIncidencias() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         String query = "SELECT i FROM Incidencia i";
+        Query q = session.createQuery(query);
+        return q.list();
+    }
+
+    public static List<Incidencia> queryAllIncidenciasFromDestino(String table, String userName) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        String query = "SELECT i FROM Incidencia i WHERE " + table + " = '" + userName + "'";
+        Query q = session.createQuery(query);
+        return q.list();
+    }
+
+    public static List<Historial> queryLastConnectEmpleado(String userName) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        String query = "SELECT h FROM Historial h WHERE empleado = '" + userName + "' order by fechahora";
+        Query q = session.createQuery(query);
+        return q.list();
+    }
+
+    public static List<Historial> queryRankingEmpleados() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        String query = "SELECT h FROM Historial h WHERE tipo = 'U' group by empleado";
         Query q = session.createQuery(query);
         return q.list();
     }

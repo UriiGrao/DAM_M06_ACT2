@@ -5,6 +5,7 @@ import Controller.Controller;
 import Models.*;
 import Utils.EntradaDatos;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -16,7 +17,7 @@ public class IncidenciasBDOR {
     private static final String ERROR_MESSAGE = "Error Option try again.";
 
     public static ArrayList<Empleado> empleados = new ArrayList<>();
-    public static ArrayList<Incidencia> incidencias = new ArrayList<>();
+    public static List<Incidencia> incidencias = new ArrayList<>();
 
     public static void main(String[] args) {
         boolean salir = false;
@@ -24,17 +25,18 @@ public class IncidenciasBDOR {
         while (!salir) {
             switch (menu()) {
                 case 1:
-                workWithIncidencias();
-                break;
+                    workWithIncidencias();
+                    break;
                 case 2:
-                workWithEmpleados();
-                break;
+                    workWithEmpleados();
+                    break;
                 case 3:
-                System.out.println("See You!!");
-                salir = true;
-                break;
+                    System.out.println("See You!!");
+                    salir = true;
+                    System.exit(0);
+                    break;
                 default:
-                Colors.printRed(ERROR_MESSAGE);
+                    Colors.printRed(ERROR_MESSAGE);
             }
         }
     }
@@ -51,26 +53,31 @@ public class IncidenciasBDOR {
 
     private static void workWithIncidencias() {
         boolean salirInci = false;
+        String table = "";
         while (!salirInci) {
             switch (menuInci()) {
                 case "a":
-                getIncidenciaByID();
-                break;
+                    getIncidenciaByID();
+                    break;
                 case "b":
-                getAllIncidencias();
-                break;
+                    getAllIncidencias();
+                    break;
                 case "c":
-                createIncidencia();
-                break;
+                    createIncidencia();
+                    break;
                 case "d":
-                break;
+                    table = "destino";
+                    showAllIncidenciasFrom(table);
+                    break;
                 case "e":
-                break;
+                    table = "origen";
+                    showAllIncidenciasFrom(table);
+                    break;
                 case "f":
-                salirInci = true;
-                break;
+                    salirInci = true;
+                    break;
                 default:
-                Colors.printRed(ERROR_MESSAGE);
+                    Colors.printRed(ERROR_MESSAGE);
             }
         }
     }
@@ -80,25 +87,25 @@ public class IncidenciasBDOR {
         while (!salirEmp) {
             switch (menuEmp()) {
                 case "a":
-                createEmpleado();
-                break;
+                    createEmpleado();
+                    break;
                 case "b":
-                loginEmpleado();
-                break;
+                    loginEmpleado();
+                    break;
                 case "c":
-                modifyEmpleado();
-                break;
+                    modifyEmpleado();
+                    break;
                 case "d":
-                changePasswordEmpleado();
-                break;
+                    changePasswordEmpleado();
+                    break;
                 case "e":
-                deleteEmpleado();
-                break;
+                    deleteEmpleado();
+                    break;
                 case "f":
-                salirEmp = true;
-                break;
+                    salirEmp = true;
+                    break;
                 default:
-                Colors.printRed(ERROR_MESSAGE);
+                    Colors.printRed(ERROR_MESSAGE);
             }
         }
 
@@ -129,22 +136,36 @@ public class IncidenciasBDOR {
     }
 
     private static void getAllIncidencias() {
-        incidencias = (ArrayList<Incidencia>) Controller.queryAllIncidencias();
-        for (Incidencia incidencia: incidencias) {
+        incidencias = Controller.queryAllIncidencias();
+        incidencias.forEach((incidencia) -> {
             System.out.println(incidencia.toString());
-        }
+        });
     }
 
     private static void getIncidenciaByID() {
         int idInci = EntradaDatos.pedirEntero("Numero de inci1dencia: ");
-        incidencias = (ArrayList<Incidencia>) Controller.queryIncidenciaByID(idInci);
+        incidencias = Controller.queryIncidenciaByID(idInci);
         System.out.println(incidencias);
     }
 
     private static void createIncidencia() {
-        String fechahora = EntradaDatos.pedirCadena("Fecha de la incidencias: ");
+        String fechahora = EntradaDatos.pedirCadena("Fecha de la incidencias: YY/MM/DD ");
         String detalle = EntradaDatos.pedirCadena("Detalles de la incidencia: ");
-        
+        String userOrigen = EntradaDatos.pedirCadena("Nombre Usuario del origen: ");
+        String userDestino = EntradaDatos.pedirCadena("Nombre Usuario del destino: ");
+        ArrayList<String> wordsAccepted = new ArrayList<>();
+        wordsAccepted.add("Urgente");
+        wordsAccepted.add("Normal");
+        String tipo = EntradaDatos.askString("Tipo de incidencia: ", wordsAccepted);
+
+        if (Controller.getEmpleado(userOrigen) == null || Controller.getEmpleado(userDestino) == null) {
+            System.out.println("ERROR: user Origen or user Destino no exist.");
+            return;
+        }
+        Empleado empleadoByOrigen = Controller.getEmpleado(userOrigen);
+        Empleado empleadoByDestino = Controller.getEmpleado(userDestino);
+        Incidencia incidencia = new Incidencia(empleadoByOrigen, empleadoByDestino, fechahora, detalle, tipo);
+        Controller.addIncidencia(incidencia);
     }
 
     private static void createEmpleado() {
@@ -192,18 +213,18 @@ public class IncidenciasBDOR {
         while (!salirEdit) {
             switch (menuEdit(empleado)) {
                 case 1:
-                String completName = EntradaDatos.pedirCadena("Nuevo Nombre Completo: ");
-                Controller.modifyEmpleado(empleado, "nombrecompleto", completName);
-                break;
+                    String completName = EntradaDatos.pedirCadena("Nuevo Nombre Completo: ");
+                    Controller.modifyEmpleado(empleado, "nombrecompleto", completName);
+                    break;
                 case 2:
-                String telefono = EntradaDatos.pedirCadena("Nuevo Telefono: ");
-                Controller.modifyEmpleado(empleado, "telefono", telefono);
-                break;
+                    String telefono = EntradaDatos.pedirCadena("Nuevo Telefono: ");
+                    Controller.modifyEmpleado(empleado, "telefono", telefono);
+                    break;
                 case 3:
-                salirEdit = true;
-                break;
+                    salirEdit = true;
+                    break;
                 default:
-                Colors.printRed(ERROR_MESSAGE);
+                    Colors.printRed(ERROR_MESSAGE);
             }
         }
     }
@@ -220,9 +241,30 @@ public class IncidenciasBDOR {
 
     private static void changePasswordEmpleado() {
         String userName = EntradaDatos.pedirCadena("Nombre Usuario: ");
+        if (Controller.getEmpleado(userName) == null) {
+            System.out.println("No existe usuario con ese Nombre de Usuario");
+            return;
+        }
         Empleado empleado = Controller.getEmpleado(userName);
         String pass = EntradaDatos.pedirCadena("Nueva Contraseña: ");
 
         Controller.modifyEmpleado(empleado, "password", pass);
+    }
+
+    private static void showAllIncidenciasFrom(String table) {
+        String userName = EntradaDatos.pedirCadena("Nombre Usuario del Destinatario: ");
+        if (Controller.getEmpleado(userName) == null) {
+            System.out.println("No existe usuario con ese Nombre de Usuario");
+            return;
+        }
+        incidencias = Controller.queryAllIncidenciasFromDestino(table, userName);
+
+        if (incidencias.isEmpty()) {
+            System.out.println("Este usuario no tiene Incidencias para " + table);
+        } else {
+            incidencias.forEach((incidencia) -> {
+                System.out.println(incidencia.toStringDestino());
+            });
+        }
     }
 }

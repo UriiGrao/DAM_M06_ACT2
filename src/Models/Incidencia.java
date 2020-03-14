@@ -16,8 +16,7 @@ public class Incidencia implements java.io.Serializable {
     public Incidencia() {
     }
 
-    public Incidencia(int idincidencia, Empleado empleadoByOrigen, Empleado empleadoByDestino, String fechahora, String detalle, String tipo) {
-        this.idincidencia = idincidencia;
+    public Incidencia(Empleado empleadoByOrigen, Empleado empleadoByDestino, String fechahora, String detalle, String tipo) {
         this.empleadoByOrigen = empleadoByOrigen;
         this.empleadoByDestino = empleadoByDestino;
         this.fechahora = fechahora;
@@ -76,6 +75,10 @@ public class Incidencia implements java.io.Serializable {
     @Override
     public String toString() {
         return "Incidencia{" + "idincidencia=" + idincidencia + ", empleadoByOrigen=" + empleadoByOrigen + ", empleadoByDestino=" + empleadoByDestino + ", fechahora=" + fechahora + ", detalle=" + detalle + ", tipo=" + tipo + '}';
+    }
+
+    public String toStringDestino() {
+        return "Incidencia{" + "idincidencia=" + idincidencia + ", empleadoByOrigen=" + empleadoByOrigen + ", fechahora=" + fechahora + ", detalle=" + detalle + ", tipo=" + tipo + '}';
     }
 
 }

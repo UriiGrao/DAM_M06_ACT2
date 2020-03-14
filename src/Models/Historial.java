@@ -52,4 +52,13 @@ public class Historial implements java.io.Serializable {
         this.fechahora = fechahora;
     }
 
+    @Override
+    public String toString() {
+        return "Historial{" + "idevento=" + idevento + ", empleado=" + empleado + ", tipo=" + tipo + ", fechahora=" + fechahora + '}';
+    }
+
+    public String toStringFechaHora() {
+        return "La fecha y hora es: " + fechahora;
+    }
+
 }
